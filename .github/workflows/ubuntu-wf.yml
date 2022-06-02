@@ -1,0 +1,30 @@
+name: "gremlin ubuntu CI workflow"
+
+
+on:
+  push:
+    branches: [ test ]
+
+jobs:
+
+# https://gremlin.org/reference/usage/install/
+  gremlin-ubuntu-latest-job:
+    name: "gremlin on ubuntu-latest"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: "os fingerprinting"
+      run: hostnamectl status 
+    - name: "Install gremlin"
+      run: |
+        # Install Python
+        sudo apt-get install python3 python3-venv
+        # Create a virtual environment
+        python3 -m venv ~/.venvs/gremlin 
+        source  ~/.gremlin/chaostk/bin/activate  
+        #add the gremlin repo
+        echo "deb https://deb.gremlin.com/ release non-free" | \
+          sudo tee /etc/apt/sources.list.d/gremlin.list 
+
+        
+
